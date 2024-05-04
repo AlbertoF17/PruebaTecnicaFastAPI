@@ -1,39 +1,51 @@
-from fastapi import FastAPI
-import pandas as pd
-from src.db_manager import MongoDBManager
-from fastapi.templating import Jinja2Templates
+from fastapi import FastAPI, Path, HTTPException
+from typing import List
+from utils import leer_csv
+from registro import Registro
+import db_manager
+import plotly.graph_objs as go
+from plotly.subplots import make_subplots
 
-connection_string = "mongodb+srv://albertofernandez:Alberto2002@energyconsumption.oayuede.mongodb.net/"
-database_name = "EnergyConsumption"
-collection_name = "consumption"
-db_manager = MongoDBManager(connection_string, database_name, collection_name)
-
-
-data = pd.read_csv("Data/Monitoring Report.csv")
-data_dict = data.to_dict()
-
-templates = Jinja2Templates(directory="templates")
 
 app = FastAPI()
 
-@app.get("/")
-def get_index():
-    return templates.TemplateResponse("index.html", context={"data_dict": data_dict})
+@app.get("/registros")
+def obtener_registros():
+    registros = leer_csv("Data/Monitoring report.csv")
+    return registros
 
-@app.get("/datos/consumo")
-def get_consumo():
-    consumo_total = db_manager.get_total_consumption()
-    return {"consumo_total": consumo_total + "kWh"}
 
-@app.get("/datos/consumo/{fecha}")
-def get_consumo_fecha(fecha: str):
-    consumo_fecha = db_manager.get_consumption_by_date(fecha)
-    return {"consumo_fecha": consumo_fecha + "kWh"}
+@app.get("/registros/{num}")
+def obtener_registro(num: int = Path(..., title="Número del registro")):
+    registros = obtener_registros()
+    if num < 0 or num >= len(registros):
+        return {"error": "No existe este registro"}
+    return registros[num]
 
-@app.post("/save")
-def set_registros(data):
-    data_dict = data.to_dict(orient="records")
-    db_manager.insert_data(data_dict)
+
+@app.post("/registros")
+def agregar_registro(registro: Registro):
+    if not registro.validate(Registro):
+        raise HTTPException(status_code=400, detail="Los datos del registro no son válidos")
+    else:
+        registros = obtener_registros()
+        registros.append(registro)
+        db_manager.insert_data(registro.dict())
+    return {"mensaje": "Registro agregado exitosamente"}
+
+@app.get("/grafico")
+def obtener_grafico():
+    registros = obtener_registros
+
+    fig = go.Figure()
+    for registro in registros:
+        fig.add_trace(go.Scatter(x=[registro.Date], y=[registro.Energy_kWh], mode="lines+markers", name="Energy (kWh)"))
+
+    fig.update_layout(title="Consumo de Energía",
+                      xaxis_title="Fecha",
+                      yaxis_title="Energía (kWh)")
+
+    return fig
 
 if __name__ == "__main__":
     import uvicorn
