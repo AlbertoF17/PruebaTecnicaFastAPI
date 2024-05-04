@@ -1,8 +1,11 @@
 import pandas as pd
+import csv
 from registro import Registro
 
+csvFile = "Data/Monitoring report.csv"
+
 def leer_csv(nombre_archivo):
-    df = pd.read_csv("Data/Monitoring report.csv")
+    df = pd.read_csv(csvFile)
     
     mapeo_nombres = {
         'Date': 'Date',
@@ -23,6 +26,14 @@ def leer_csv(nombre_archivo):
     lista_registros = []
     for registro in registros_dict:
         registro_obj = Registro(**registro)
-        lista_registros.append(registro_obj)  
-    
+        lista_registros.append(registro_obj)
+
     return lista_registros
+
+def escribir_en_csv(registro_dict, csvFile):
+    with open(csvFile, mode='a', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=registro_dict.keys())
+        if file.tell() == 0:
+            writer.writeheader()
+
+        writer.writerow(registro_dict)

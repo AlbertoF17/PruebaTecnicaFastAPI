@@ -1,6 +1,8 @@
+from fastapi import HTTPException
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, validator, root_validator
+from pydantic import BaseModel, validator, root_validator, ValidationError
+
 import math
 
 class Registro(BaseModel):
@@ -29,6 +31,15 @@ class Registro(BaseModel):
                 data[key] = None
         return data
         
+
+    @classmethod
+    def validar_registro(cls, registro):
+        try:
+            cls(**registro.dict())
+            return True
+        except ValidationError:
+            return False
+            
     @validator('Date')
     def validar_date(cls, v):
         try:
@@ -42,7 +53,7 @@ class Registro(BaseModel):
         for key, value in values.items():
             if key != 'Date':  # Evitar redondear el campo Date
                 if isinstance(value, str) and not value.replace('.', '', 1).isdigit():
-                    raise ValueError(f"El campo '{key}' debe ser un número")
+                    raise ValidationError(f"El campo '{key}' debe ser un número")
                 elif isinstance(value, float):
                     values[key] = round(value, 3)
         return values
