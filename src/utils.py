@@ -1,6 +1,7 @@
 import pandas as pd
 import csv
 from registro import Registro
+from typing import Dict
 
 csvFile = "Data/Monitoring report.csv"
 
@@ -30,10 +31,10 @@ def leer_csv(nombre_archivo):
 
     return lista_registros
 
-def escribir_en_csv(registro_dict, csvFile):
+def escribir_en_csv(registro_dict: Dict[str, float], csvFile: str):
     with open(csvFile, mode='a', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=registro_dict.keys())
         if file.tell() == 0:
             writer.writeheader()
-
-        writer.writerow(registro_dict)
+        formatted_registro = {key: f"{value:.3f}" if isinstance(value, float) else value for key, value in registro_dict.items()}
+        writer.writerow(formatted_registro)

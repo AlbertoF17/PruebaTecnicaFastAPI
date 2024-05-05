@@ -12,8 +12,8 @@ Este proyecto implementa una API para gestionar datos de consumo de energía uti
 
 1. Asegúrate de tener una instancia de MongoDB en ejecución.
 2. Configura la conexión a MongoDB en el archivo `api_manager.py`.
-3. Ejecuta el archivo `main.py` para insertar datos desde un archivo CSV a la base de datos MongoDB.
-4. Ejecuta el archivo `api_manager.py` para iniciar el servidor de la API.
+3. Ejecuta el archivo `main.py` para iniciar el servidor de la API, esto automáticamente volcará los datos existentes en el CSV a la base de datos MongoDB, y se añadirán datos nuevos tanto al CSV como a la MongoDB en caso de que estos sean introducidos exitosamente.
+4. Ejecuta el archivo `main.py` .
 5. Accede a la API a través de `http://localhost:8000`.
 
 ## Decisiones Técnicas
@@ -26,11 +26,8 @@ Este proyecto implementa una API para gestionar datos de consumo de energía uti
 
 A continuación se presentan algunas mejoras que podrían realizarse en la aplicación:
 
-1. **Autenticación y Autorización**: Implementar mecanismos de autenticación y autorización para proteger la API.
-2. **Validación de Datos**: Agregar validación de datos para asegurar que los datos ingresados sean correctos.
-3. **Documentación**: Generar una documentación detallada de la API utilizando herramientas como Swagger UI.
-4. **Pruebas Unitarias**: Escribir pruebas unitarias para garantizar la calidad del código.
-5. **Optimización de Consultas**: Optimizar las consultas a la base de datos para mejorar el rendimiento de la aplicación.
-6. **Manejo de Errores**: Mejorar el manejo de errores para proporcionar mensajes de error más descriptivos.
+1. **Diferentes tipos de gráficos**: Implementación del tipo de gráfico más adecuado al dato que se está observando.
+2. **Optimización de Consultas**: Optimizar las consultas a la base de datos para mejorar el rendimiento de la aplicación.
+3. **Manejo de Errores**: Mejorar el manejo de errores para proporcionar mensajes de error más descriptivos.
 
 ¡Gracias por utilizar nuestra aplicación!

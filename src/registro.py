@@ -1,6 +1,4 @@
-from fastapi import HTTPException
 from datetime import datetime
-from typing import Optional
 from pydantic import BaseModel, validator, root_validator, ValidationError
 
 import math
@@ -22,7 +20,7 @@ class Registro(BaseModel):
             if isinstance(value, str) and value.lower() == 'nan':
                 setattr(self, key, 0.0)
             elif isinstance(value, str) and value.replace('.', '', 1).isdigit():
-                setattr(self, key, float(value))
+                setattr(self, key, round(float(value), 3))
 
     def dict(self, *args, **kwargs):
         data = super().dict(*args, **kwargs)
