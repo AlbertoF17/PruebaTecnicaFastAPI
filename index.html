@@ -128,27 +128,19 @@
             const dateTimeInput = document.querySelector("#dateTimeInput").value;
             const selectedDate = new Date(dateTimeInput);
             const formattedDate = formatDateTime(selectedDate);
-            const energy = parseFloat(document.getElementById('energy').value);
-            const reactive_energy = parseFloat(document.getElementById('reactive_energy').value);
-            const power = parseFloat(document.getElementById('power').value);
-            const maximeter = parseFloat(document.getElementById('maximeter').value);
-            const reactive_power = parseFloat(document.getElementById('reactive_power').value);
-            const voltage = parseFloat(document.getElementById('voltage').value);
-            const intensity = parseFloat(document.getElementById('intensity').value);
-            const power_factor = parseFloat(document.getElementById('power_factor').value);
-
+            document.querySelector("#dateTimeInput").value = formattedDate;
             const registroData = {
                 "Date": formattedDate,
-                "Energy_kWh": energy,
-                "Reactive_energy_kVArh": reactive_energy,
-                "Power_kW": power,
-                "Maximeter_kW": maximeter,
-                "Reactive_power_kVAr": reactive_power,
-                "Voltage_V": voltage,
-                "Intensity_A": intensity,
-                "Power_factor": power_factor
+                "Energy_kWh": document.getElementById('energy').value,
+                "Reactive_energy_kVArh": document.getElementById('reactive_energy').value,
+                "Power_kW": document.getElementById('power').value,
+                "Maximeter_kW": document.getElementById('maximeter').value,
+                "Reactive_power_kVAr": document.getElementById('reactive_power').value,
+                "Voltage_V": document.getElementById('voltage').value,
+                "Intensity_A": document.getElementById('intensity').value,
+                "Power_factor": document.getElementById('power_factor').value
             };
-
+            
             fetch('/registros', {
                 method: 'POST',
                 headers: {
@@ -156,19 +148,7 @@
                 },
                 body: JSON.stringify(registroData)
             })
-                .then(response => {
-                    formulario.reset()
-                    if (response.ok) {
-                        console.log('Registro agregado exitosamente');
-                        window.location.reload()
-                    } else {
-                        console.error('Error al agregar registro');
-                        window.location.reload()
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            window.location.reload()
         });
 
 
