@@ -6,15 +6,13 @@ Este proyecto implementa una API para gestionar datos de consumo de energía uti
 
 1. Clona este repositorio en tu máquina local.
 2. Asegúrate de tener Python instalado.
-3. Instala las dependencias del proyecto ejecutando `pip install -r requirements.txt`.
+3. Instala las dependencias del proyecto ejecutando `pip install -r resources/requirements.txt`.
 
 ## Uso
 
-1. Asegúrate de tener una instancia de MongoDB en ejecución.
-2. Configura la conexión a MongoDB en el archivo `api_manager.py`.
-3. Ejecuta el archivo `main.py` para iniciar el servidor de la API, esto automáticamente volcará los datos existentes en el CSV a la base de datos MongoDB, y se añadirán datos nuevos tanto al CSV como a la MongoDB en caso de que estos sean introducidos exitosamente.
-4. Ejecuta el archivo `main.py` .
-5. Accede a la API a través de `http://localhost:8000`.
+1. Asegura que la conexión a la Atlas de MongoDB es correcta el la creación de la instancia del objeto MongoDBManager, que se encuentra en el archivo `main.py`.
+2. Ejecuta el archivo `main.py` para iniciar el servidor de la API, esto automáticamente volcará los datos existentes en el CSV a la base de datos Atlas de MongoDB, y se añadirán datos nuevos tanto al CSV como a la MongoDB en caso de que estos sean introducidos exitosamente.
+3. Accede a la API a través de `http://localhost:8000` para visualizar los gráficos y el formulario para añadir datos.
 
 ## Decisiones Técnicas
 

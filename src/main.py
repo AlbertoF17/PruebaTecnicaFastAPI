@@ -6,8 +6,8 @@ from registro import Registro
 from db_manager import MongoDBManager
 import plotly.graph_objs as go
 import pandas as pd
+from db_manager import csvFile
 
-csv = "Data/Monitoring report.csv"
 db_manager = MongoDBManager("mongodb+srv://albertofernandez:Alberto2002@energyconsumption.oayuede.mongodb.net/", "EnergyConsumption", "consumption")
 db_manager.init_data()
 with open("index.html", "r") as file:
@@ -17,7 +17,7 @@ app = FastAPI()
 
 @app.get("/registros")
 def obtener_registros():
-    registros = leer_csv(csv)
+    registros = leer_csv(csvFile)
     return registros
 
 
@@ -31,7 +31,7 @@ def obtener_registro(num: int = Path(..., title="Número del registro")):
 
 @app.post("/registros")
 async def agregar_registro(registro: Registro):
-    escribir_en_csv(registro.dict(), csv)
+    escribir_en_csv(registro.dict(), csvFile)
     registros_dict = [registro.dict() for registro in obtener_registros()]
     db_manager.insert_data(registros_dict)
     return {"mensaje": "Registro agregado exitosamente"}
@@ -44,7 +44,7 @@ async def read_root():
 
 @app.get("/graphs/{graph}")
 async def generate_graph(graph: str, response: Response):
-    df = pd.read_csv(csv)
+    df = pd.read_csv(csvFile)
     df['Date'] = pd.to_datetime(df['Date'])
 
     graph_operations = {

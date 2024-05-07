@@ -1,7 +1,7 @@
 import pymongo
 import pandas as pd
 
-csv = "Data/Monitoring report.csv"
+csvFile = "Data/Monitoring report.csv"
 
 class MongoDBManager:
     def __init__(self, connection_string, database_name, collection_name):
@@ -10,7 +10,7 @@ class MongoDBManager:
         self.collection = self.db[collection_name]
 
     def init_data(self):
-        df = pd.read_csv(csv)
+        df = pd.read_csv(csvFile)
         data = df.to_dict(orient='records')
         self.insert_data(data)
 

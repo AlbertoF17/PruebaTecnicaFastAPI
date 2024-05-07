@@ -2,8 +2,7 @@ import pandas as pd
 import csv
 from registro import Registro
 from typing import Dict
-
-csvFile = "Data/Monitoring report.csv"
+from db_manager import csvFile
 
 def leer_csv(nombre_archivo):
     df = pd.read_csv(csvFile)
