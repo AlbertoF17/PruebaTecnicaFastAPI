@@ -49,7 +49,7 @@ class Registro(BaseModel):
     @root_validator
     def validar_floats(cls, values):
         for key, value in values.items():
-            if key != 'Date':  # Evitar redondear el campo Date
+            if key != 'Date':
                 if isinstance(value, str) and not value.replace('.', '', 1).isdigit():
                     raise ValidationError(f"El campo '{key}' debe ser un número")
                 elif isinstance(value, float):
