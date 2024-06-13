@@ -27,4 +27,3 @@ A continuación se presentan algunas mejoras que podrían realizarse en la aplic
 1. **Diferentes tipos de gráficos**: Implementación del tipo de gráfico más adecuado al dato que se está observando.
 2. **Optimización de Consultas**: Optimizar las consultas a la base de datos para mejorar el rendimiento de la aplicación.
 3. **Manejo de Errores**: Mejorar el manejo de errores para proporcionar mensajes de error más descriptivos.
-asdasdasdasd
