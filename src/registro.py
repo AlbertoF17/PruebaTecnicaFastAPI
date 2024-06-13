@@ -1,6 +1,5 @@
 from datetime import datetime
 from pydantic import BaseModel, validator, root_validator, ValidationError
-
 import math
 
 class Registro(BaseModel):
@@ -28,16 +27,22 @@ class Registro(BaseModel):
             if isinstance(value, float) and math.isnan(value):
                 data[key] = None
         return data
-        
 
     @classmethod
-    def validar_registro(cls, registro):
-        try:
-            cls(**registro.dict())
-            return True
-        except ValidationError:
-            return False
-            
+    def from_dict(cls, data):
+        normalized_data = {
+            "Date": data.get("Date"),
+            "Energy_kWh": data.get("Energy (kWh)"),
+            "Reactive_energy_kVArh": data.get("Reactive energy (kVArh)"),
+            "Power_kW": data.get("Power (kW)"),
+            "Maximeter_kW": data.get("Maximeter (kW)"),
+            "Reactive_power_kVAr": data.get("Reactive power (kVAr)"),
+            "Voltage_V": data.get("Voltage (V)"),
+            "Intensity_A": data.get("Intensity (A)"),
+            "Power_factor": data.get("Power factor (φ)")
+        }
+        return cls(**normalized_data)
+
     @validator('Date')
     def validar_date(cls, v):
         try:
